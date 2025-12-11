@@ -1,0 +1,288 @@
+package templates
+
+import (
+	"fmt"
+	"github.com/dliluashvili/cowatchit/internal/helpers"
+	"github.com/dliluashvili/cowatchit/internal/models"
+	"github.com/dliluashvili/cowatchit/internal/params"
+)
+
+templ RoomsPage(rooms []models.Room, roomsParams *params.RoomsParams) {
+	@Layout("Cowatch - Never watch alone again", true, false) {
+		@Rooms(rooms, roomsParams)
+	}
+}
+
+templ Rooms(rooms []models.Room, roomsParams *params.RoomsParams) {
+	<div class="max-w-7xl mx-auto px-4 py-8">
+		<!-- Action Bar -->
+		<div class="flex flex-col sm:flex-row gap-4 mb-8">
+			<div class="flex flex-1 gap-4">
+				<button class="btn btn-sm glass-primary" hx-get="/create-room" hx-target="#rooms-container" hx-swap="innerHTML" hx-push-url="true">
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<line x1="12" y1="5" x2="12" y2="19"></line>
+						<line x1="5" y1="12" x2="19" y2="12"></line>
+					</svg>
+					Create Room
+				</button>
+				<button
+					class={ helpers.GetFilterBtnClass(roomsParams.My, "true") }
+					hx-get="/rooms"
+					hx-push-url="true"
+					hx-target="#rooms-container"
+					hx-include="[name='keyword']"
+					hx-vals='{"my": "true", "filter": "all"}'
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+					</svg>
+					My Rooms
+				</button>
+			</div>
+			<!-- Search and Filter -->
+			<div class="flex gap-2">
+				<button
+					class={ helpers.GetFilterBtnClass(roomsParams.Filter, "all") }
+					hx-get="/rooms"
+					hx-push-url="true"
+					hx-target="#rooms-container"
+					hx-include="[name='keyword'], [name='my']"
+					hx-vals='{"filter": "all"}'
+				>
+					All
+				</button>
+				<button
+					class={ helpers.GetFilterBtnClass(roomsParams.Filter, "public") }
+					hx-get="/rooms"
+					hx-push-url="true"
+					hx-target="#rooms-container"
+					hx-include="[name='keyword'], [name='my']"
+					hx-vals='{"filter": "public"}'
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<circle cx="12" cy="12" r="10"></circle>
+						<line x1="2" y1="12" x2="22" y2="12"></line>
+						<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+					</svg>
+					Public
+				</button>
+				<button
+					class={ helpers.GetFilterBtnClass(roomsParams.Filter, "private") }
+					hx-get="/rooms"
+					hx-push-url="true"
+					hx-target="#rooms-container"
+					hx-include="[name='keyword'], [name='my']"
+					hx-vals='{"filter": "private"}'
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+						<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+					</svg>
+					Private
+				</button>
+			</div>
+			<input type="hidden" name="filter" value={ roomsParams.Filter }/>
+			<input type="hidden" name="my" value={ roomsParams.My }/>
+		</div>
+		@RoomsList(rooms)
+	</div>
+}
+
+templ EmptyState() {
+	<div class="card glass-card">
+		<div class="card-body p-12 text-center">
+			<div class="bg-white/10 rounded-full p-4 inline-block mb-4 mx-auto">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-8 w-8 text-white/50"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+					<circle cx="9" cy="7" r="4"></circle>
+					<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+					<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+				</svg>
+			</div>
+			<h2 class="card-title text-white mb-2 justify-center">
+				No rooms available
+			</h2>
+			<p class="text-white/70 mb-6">
+				Be the first to create a movie room!
+			</p>
+			<button class="btn btn-sm glass-primary" hx-get="/create-room" hx-push-url="true" hx-target="#rooms-container" hx-swap="innerHTML">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="w-4 h-4 mr-2"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<line x1="12" y1="5" x2="12" y2="19"></line>
+					<line x1="5" y1="12" x2="19" y2="12"></line>
+				</svg>
+				Create Your First Room
+			</button>
+		</div>
+	</div>
+}
+
+templ RoomCard(room models.Room, isHost bool, isUserInRoom bool) {
+	<div class="card glass-card hover:bg-white/10 transition-colors">
+		<div class="card-body">
+			<div class="flex items-start justify-between mb-4">
+				<div class="flex-1">
+					<h2 class="card-title text-white flex items-center gap-2 flex-wrap">
+						{ room.Title }
+						<div class="flex items-center gap-1">
+							if isHost {
+								<span class="badge bg-purple-500/20 text-purple-300">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="w-3 h-3 mr-1"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path>
+									</svg>
+									Host
+								</span>
+							}
+							if room.Private {
+								<span class="badge bg-yellow-500/20 text-yellow-300">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="w-3 h-3 mr-1"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+										<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+									</svg>
+									Private
+								</span>
+							} else {
+								<span class="badge bg-blue-500/20 text-blue-300">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="w-3 h-3 mr-1"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<circle cx="12" cy="12" r="10"></circle>
+										<line x1="2" y1="12" x2="22" y2="12"></line>
+										<path
+											d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+										></path>
+									</svg>
+									Public
+								</span>
+							}
+						</div>
+					</h2>
+					<p class="text-white/70 flex items-center gap-2 text-sm">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="w-3 h-3"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<circle cx="12" cy="12" r="10"></circle>
+							<polyline points="12 6 12 12 16 14"></polyline>
+						</svg>
+						Hosted by { room.HostUsername }
+					</p>
+				</div>
+				if room.Poster != "" {
+					<img src={ room.Poster } alt={ room.Title } class="w-16 h-24 object-cover rounded-md ml-4"/>
+				}
+			</div>
+			<p class="text-white/80 mb-4 line-clamp-2">{ room.Description }</p>
+			<div class="flex items-center justify-between mb-4">
+				<div class="flex items-center text-white/70">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="w-4 h-4 mr-1"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+						<circle cx="9" cy="7" r="4"></circle>
+						<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+						<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+					</svg>
+					<span>{ fmt.Sprintf("%d", room.Capacity) }</span>
+				</div>
+				if room.Capacity > 2 {
+					<span class="badge bg-green-500/20 text-green-300">Open</span>
+				} else {
+					<span class="badge bg-red-500/20 text-red-300">Full</span>
+				}
+			</div>
+			<button
+				class="btn btn-sm w-full glass-primary"
+				hx-get={ fmt.Sprintf("/rooms/%s", room.ID.String()) }
+				hx-push-url="true"
+				hx-target="#rooms-container"
+				hx-swap="innerHTML"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="w-4 h-4 mr-2"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<polygon points="5 3 19 12 5 21 5 3"></polygon>
+				</svg>
+				if isUserInRoom {
+					<span>Rejoin Room</span>
+				} else {
+					<span>Join Room</span>
+				}
+			</button>
+		</div>
+	</div>
+}
+
+templ RoomsList(rooms []models.Room) {
+	if len(rooms) == 0 {
+		@EmptyState()
+	} else {
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+			for _, room := range rooms {
+				@RoomCard(room, false, false)
+			}
+		</div>
+	}
+}

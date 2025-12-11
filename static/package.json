@@ -1,0 +1,35 @@
+{
+    "name": "scripts",
+    "version": "1.0.0",
+    "description": "",
+    "license": "ISC",
+    "author": "",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "@types/node": "^22.14.1",
+        "autoprefixer": "^10.4.21",
+        "daisyui": "^4",
+        "postcss": "^8.5.6",
+        "tailwindcss": "^3.4.18",
+        "terser": "^5.44.0",
+        "typescript": "~5.9.3",
+        "video.js": "^8.23.4",
+        "vite": "^7.1.9"
+    },
+    "prettier": {
+        "semi": false,
+        "tabWidth": 4,
+        "singleQuote": true
+    },
+    "dependencies": {
+        "htmx-ext-ws": "^2.0.4",
+        "slim-select": "^2.13.1",
+        "valibot": "^1.1.0"
+    }
+}

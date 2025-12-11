@@ -1,0 +1,342 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Variables */
+:root {
+    /* Glass morphism colors */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-input-bg: rgba(255, 255, 255, 0.08);
+    --glass-input-border: rgba(255, 255, 255, 0.15);
+    --glass-input-focus: rgba(255, 255, 255, 0.12);
+
+    /* Purple gradient colors */
+    --primary-purple: #8b5cf6;
+    --primary-purple-light: #a78bfa;
+    --primary-blue: #3b82f6;
+    --primary-blue-light: #60a5fa;
+}
+
+@layer base {
+    * {
+        @apply border-opacity-20;
+    }
+
+    body {
+        background: linear-gradient(
+                135deg,
+                rgba(88, 28, 135, 0.85),
+                rgba(30, 58, 138, 0.85),
+                rgba(49, 46, 129, 0.85)
+            ),
+            url('https://images.unsplash.com/photo-1672862313692-3346b57e3fa2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3ZpZSUyMHRoZWF0ZXIlMjBjaW5lbWElMjBkYXJrJTIwcHVycGxlJTIwbGlnaHRpbmd8ZW58MXx8fHwxNzU5ODI5NDY5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        @apply min-h-screen text-white;
+        font-family: 'Space Grotesk', sans-serif;
+        font-optical-sizing: auto;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1 {
+        @apply text-3xl font-semibold tracking-tight;
+    }
+
+    h2 {
+        @apply text-2xl font-semibold tracking-tight;
+    }
+
+    h3 {
+        @apply text-xl font-semibold;
+    }
+
+    p {
+        @apply text-base text-white/70;
+    }
+}
+
+@layer components {
+    .input-sm {
+        height: 2.4rem;
+        padding-right: 0.75rem;
+        font-size: 0.875rem;
+        line-height: 2rem;
+    }
+
+    .btn-sm {
+        height: 2.4rem;
+        min-height: 2rem;
+        padding-left: 0.85rem;
+        padding-right: 0.85rem;
+        font-size: 0.875rem;
+    }
+
+    .alert-sm {
+        @apply py-2 px-3 text-sm min-h-0;
+    }
+
+    .alert-sm svg {
+        @apply h-4 w-4;
+    }
+
+    /* Glass Alert */
+    .alert-glass {
+        color: white !important;
+        background: var(--glass-bg) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border) !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    .alert-glass.alert-error {
+        background: rgba(239, 68, 68, 0.15) !important;
+        border-color: rgba(239, 68, 68, 0.3) !important;
+    }
+
+    .alert-glass.alert-success {
+        background: rgba(34, 197, 94, 0.15) !important;
+        border-color: rgba(34, 197, 94, 0.3) !important;
+    }
+
+    .alert-glass.alert-warning {
+        background: rgba(251, 191, 36, 0.15) !important;
+        border-color: rgba(251, 191, 36, 0.3) !important;
+    }
+
+    .alert-glass.alert-info {
+        background: rgba(59, 130, 246, 0.15) !important;
+        border-color: rgba(59, 130, 246, 0.3) !important;
+    }
+
+    /* Glass Morphism Card */
+    .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
+            0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    }
+
+    /* Override DaisyUI card for glass effect */
+    .card.glass {
+        @apply glass-card;
+    }
+
+    /* Glass Input */
+    .glass-input,
+    .input.glass {
+        background: var(--glass-input-bg) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-input-border) !important;
+        color: white !important;
+        transition: all 0.2s ease;
+    }
+
+    .glass-input::placeholder,
+    .input.glass::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .glass-input:focus,
+    .input.glass:focus {
+        background: var(--glass-input-focus) !important;
+        border-color: var(--primary-purple) !important;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3) !important;
+        outline: none;
+    }
+
+    .input-error {
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+
+    /* Glass Select */
+    .select.glass {
+        background: var(--glass-input-bg) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-input-border) !important;
+        color: white !important;
+    }
+
+    .select.glass option {
+        background: rgba(30, 27, 75, 0.95);
+        color: white;
+    }
+
+    .select.glass:focus {
+        background: var(--glass-input-focus) !important;
+        border-color: var(--primary-purple) !important;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3) !important;
+    }
+
+    /* Glass Button - Primary */
+    .btn.glass-primary {
+        background: rgba(139, 92, 246, 0.8) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(139, 92, 246, 0.3) !important;
+        color: white !important;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .btn.glass-primary:hover {
+        background: rgba(139, 92, 246, 0.9) !important;
+        border-color: rgba(139, 92, 246, 0.5) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn.glass-primary:active {
+        transform: translateY(0);
+    }
+
+    /* Glass Tabs */
+    .tabs.glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    .tab.glass-tab {
+        color: rgba(255, 255, 255, 0.7);
+        transition: all 0.2s ease;
+    }
+
+    .tab.glass-tab.tab-active {
+        background: rgba(139, 92, 246, 0.3);
+        color: white;
+        border-radius: 0.5rem;
+    }
+
+    .tab.glass-tab:hover {
+        color: white;
+    }
+
+    /* Label styling */
+
+    .label {
+        padding-bottom: 0.3rem;
+    }
+
+    .label.glass {
+        color: white;
+    }
+
+    .label-text.glass {
+        color: white;
+    }
+}
+
+@layer utilities {
+    /* Text gradient utility */
+    .text-gradient {
+        background: linear-gradient(
+            to right,
+            var(--primary-purple-light),
+            var(--primary-blue-light)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Border gradient */
+    .border-gradient {
+        border: 1px solid transparent;
+        background: linear-gradient(
+                    rgba(30, 27, 75, 0.9),
+                    rgba(30, 27, 75, 0.9)
+                )
+                padding-box,
+            linear-gradient(
+                    45deg,
+                    rgba(139, 92, 246, 0.3),
+                    rgba(59, 130, 246, 0.3)
+                )
+                border-box;
+    }
+
+    /* Custom scrollbar */
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 3px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: rgba(139, 92, 246, 0.4);
+        border-radius: 3px;
+        transition: background 0.2s ease;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background: rgba(139, 92, 246, 0.6);
+    }
+
+    /* Line clamp utilities */
+    .line-clamp-2 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .line-clamp-3 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+    }
+
+    /* Backdrop blur utilities */
+    .backdrop-blur-glass {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+
+    .backdrop-blur-medium {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+}
+
+/* Selection styling */
+::selection {
+    background: rgba(139, 92, 246, 0.3);
+    color: white;
+}
+
+::-moz-selection {
+    background: rgba(139, 92, 246, 0.3);
+    color: white;
+}
+
+/* Focus visible */
+.focus-visible:focus-visible {
+    outline: 2px solid var(--primary-purple);
+    outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

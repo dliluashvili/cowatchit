@@ -1,0 +1,93 @@
+package templates
+
+templ Layout(title string, isAuthenticated bool, roomPage bool) {
+	<!DOCTYPE html>
+	<html lang="en" data-theme="dark">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title } - Cowatch</title>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet"/>
+			if roomPage {
+				<link href="https://vjs.zencdn.net/8.23.4/video-js.css" rel="stylesheet"/>
+			}
+			<!-- Your compiled CSS -->
+			<link rel="stylesheet" href="/static/dist/css/app.css"/>
+			<!-- HTMX -->
+			<script src="/static/dist/js/htmx.min.js"></script>
+			<!-- Lucide Icons -->
+			<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+		</head>
+		<body class="min-h-screen relative">
+			<div class="min-h-screen">
+				<header class="glass-card border-0 border-b border-white/10 rounded-none">
+					<div class="max-w-7xl mx-auto px-4 py-4">
+						<div class="flex items-center justify-between">
+							<div class="flex items-center gap-4">
+								<div class="bg-white/20 p-2 rounded-lg">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="w-6 h-6 text-white"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<polygon points="5 3 19 12 5 21 5 3"></polygon>
+									</svg>
+								</div>
+								<h1 class="text-xl font-bold text-gradient">cowatch.it</h1>
+							</div>
+							<div class="flex items-center gap-4">
+								<span class="text-white/70">Welcome, Guest!</span>
+								<button class="btn btn-ghost text-white hover:bg-white/10" hx-post="/logout" hx-swap="none">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="w-4 h-4 mr-2"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+										<polyline points="16 17 21 12 16 7"></polyline>
+										<line x1="21" y1="12" x2="9" y2="12"></line>
+									</svg>
+									Logout
+								</button>
+							</div>
+						</div>
+					</div>
+				</header>
+				<div
+					id="rooms-container"
+					if isAuthenticated {
+						hx-ext="ws"
+						ws-connect="ws://localhost:8080/ws"
+					}
+				>
+					{ children... }
+				</div>
+				<script>
+				// lucide.createIcons();
+			</script>
+				if isAuthenticated {
+					<script src="/static/dist/js/htmx-ext-ws.js"></script>
+					if roomPage {
+						  <script src="https://vjs.zencdn.net/8.23.4/video.min.js"></script>
+					}
+					<script type="module" src="/static/dist/js/socket.js"></script>
+					<script type="module" src="/static/dist/js/rooms.js"></script>
+				} else {
+					<script type="module" src="/static/dist/js/auth.js"></script>
+				}
+			</div>
+		</body>
+	</html>
+}
